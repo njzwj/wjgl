@@ -205,7 +205,7 @@ void cull_and_draw_triangle(
     transform_homogenous(&render->transform, &v[i]);
     vertex_init_rhw(&v[i]);
   }
-  
+
   if (n_vertex <= 2) return;
   if (n_vertex >= 3) {
     draw_triangle(render, &v[0], &v[1], &v[2]);
@@ -238,6 +238,8 @@ static void draw_trapezoid(
   float ystep = 1.0f / (t->bottom - t->top);
   float yratio = (t->v1.vPosH.y - t->top) / (t->bottom - t->top);
   for (int y = (int)ceilf(t->top); y < t->bottom; y ++, yratio += ystep) {
+    if (y < 0) continue;
+    if (y >= render->height) break;
     vertex_interp(&l, &(t->v1), &(t->v2), yratio);
     vertex_interp(&r, &(t->v3), &(t->v4), yratio);
     vertex_step(&step, &l, &r);

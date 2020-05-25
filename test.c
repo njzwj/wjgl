@@ -42,9 +42,9 @@ void test_render() {
   wg_mat44f t_world, t_camera, t_projection;
   wg_point_t eye, center, up;
   const int W = 256, H = 256;
-  wg_mesh_t *plane_mesh = mesh_plane(1000., 20.);
+  wg_mesh_t *plane_mesh = mesh_plane(50., 20.);
 
-  eye = (wg_point_t){ {{-20., 0., 25., 1.}} };
+  eye = (wg_point_t){ {{-20., 5., 5., 1.}} };
   center = (wg_point_t){ {{0., 0., 0., 1.}} };
   up = (wg_point_t){ {{0., 1., 0., 1.}} };
 
@@ -54,7 +54,7 @@ void test_render() {
   get_identical_mat(&t_world);
   get_lookat_mat(&t_camera, eye, center, up);
   debug_mat(&t_camera, "camera");
-  get_projection_mat(&t_projection, 60., 1., 1., 100.);
+  get_projection_mat(&t_projection, 60., 1., 15., 100.);
   render->transform.world = &t_world;
   render->transform.camera = &t_camera;
   render->transform.projection = &t_projection;
