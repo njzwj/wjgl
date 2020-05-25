@@ -29,10 +29,10 @@ void render_mesh(wg_render_t *render, wg_mesh_t *mesh) {
   wg_vertex_t *v = assemble_vertex(mesh);
   uint32_t nv = mesh->nVertex, nt = mesh->nTriangle;
   uint32_t *tri = mesh->triangle;
-  shade_vertex(render, v, nv, &default_vs);
+  project_vertexes(render, v, nv);
   // Clipping in homogenous space
   for (int i = 0; i < nt * 3; i += 3) {
-    draw_triangle(render, v+tri[i], v+tri[i+1], v+tri[i+2]);
+    cull_and_draw_triangle(render, v+tri[i], v+tri[i+1], v+tri[i+2]);
   }
   free(v);
 }
@@ -41,10 +41,10 @@ void test_render() {
   wg_render_t *render = get_render();
   wg_mat44f t_world, t_camera, t_projection;
   wg_point_t eye, center, up;
-  const int W = 512, H = 512;
-  wg_mesh_t *plane_mesh = mesh_plane(20., 20.);
+  const int W = 256, H = 256;
+  wg_mesh_t *plane_mesh = mesh_plane(1000., 20.);
 
-  eye = (wg_point_t){ {{-10., 0., 25., 1.}} };
+  eye = (wg_point_t){ {{-20., 0., 25., 1.}} };
   center = (wg_point_t){ {{0., 0., 0., 1.}} };
   up = (wg_point_t){ {{0., 1., 0., 1.}} };
 

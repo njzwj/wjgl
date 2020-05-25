@@ -45,7 +45,12 @@ void shade_vertex(
 
 void default_vs(wg_render_t *const render, wg_vertex_t *v);
 
-void draw_triangle(
+void project_vertexes(
+  wg_render_t *const render, 
+  wg_vertex_t *v, size_t size
+);
+
+void cull_and_draw_triangle(
   wg_render_t *const render,
   wg_vertex_t *const v1,
   wg_vertex_t *const v2,

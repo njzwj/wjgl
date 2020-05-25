@@ -83,12 +83,28 @@ void matvecmul4(wg_mat44f *const m, wg_vec4f *const b, wg_vec4f *y) {
   for (int i = 0; i < 4; i ++) y->v[i] = tmp[i];
 }
 
+/**
+ * @description: Get projection matrix.
+ * <pre>
+ * 1 / fH         0               0               0
+ * 0              1 / fH *aR      0               0
+ * 0              0               f/(n-f)         nf/(n-f)
+ * 0              0               -1              0
+ * </pre>
+ * This matrix can project x, y, z, 1 that x' y' in [-1, 1] and z' in [0, 1], w' = -z
+ * @param {wg_mat44f *m} Pointer to the matrix to be modified.
+ * @param {float fovH} Horizontal field-of-view
+ * @param {aspectRatio}
+ * @param {near} Distance between Origin to near plane (note that this should be positive)
+ * @param {far}  Distance between Origin to far plane (should also be positive)
+ * @return: 
+ */
 void get_projection_mat(wg_mat44f *m, float fovH, float aspectRatio, float near, float far) {
   fovH = tanf(fovH * 0.5 * PI / 180.0);
   for (int i = 0; i < 16; i ++) m->v[i] = 0.;
   m->m[0][0] = 1. / fovH;
   m->m[1][1] = 1. / fovH * aspectRatio;
-  m->m[2][2] = - near - far; m->m[2][3] = - near * far;
+  m->m[2][2] = far / (near - far); m->m[2][3] = near * far / (near - far);
   m->m[3][2] = -1.;
 }
 

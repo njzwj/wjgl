@@ -43,5 +43,5 @@ void clear_render(wg_render_t *render) {
   int len = render->width * render->height;
   for (int i = 0; i < len; i ++) render->stencil[i] = 0;
   for (int i = 0; i < len * 4; i ++) render->frameBuffer[i] = 0;
-  for (int i = 0; i < len; i ++) render->zBuffer[i] = 1e10;
+  for (int i = 0; i < len; i ++) render->zBuffer[i] = 1.;
 }
