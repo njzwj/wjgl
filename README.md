@@ -4,7 +4,7 @@
 
 使用：
 ```bash
-make clean && make test.o && ./test.o
+make test
 ```
 
 # 技术特性
