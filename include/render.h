@@ -43,22 +43,22 @@ void set_up_render(wg_render_t *render, int width, int height);
 void clear_render(wg_render_t *render);
 
 void shade_vertex(
-  wg_render_t *const render, 
+  const wg_render_t *render, 
   wg_vertex_t *v, size_t size, 
-  void (*vs)(wg_render_t *const render, wg_vertex_t *v));
+  void (*vs)(const wg_render_t *render, wg_vertex_t *v));
 
-void default_vs(wg_render_t *const render, wg_vertex_t *v);
+void default_vs(const wg_render_t *render, wg_vertex_t *v);
 
 void project_vertexes(
-  wg_render_t *const render, 
+  const wg_render_t *render, 
   wg_vertex_t *v, size_t size
 );
 
 void cull_and_draw_triangle(
-  wg_render_t *const render,
-  wg_vertex_t *const v1,
-  wg_vertex_t *const v2,
-  wg_vertex_t *const v3
+  const wg_render_t *render,
+  const wg_vertex_t *v1,
+  const wg_vertex_t *v2,
+  const wg_vertex_t *v3
 );
 
 void shade_fragment(wg_render_t *render);

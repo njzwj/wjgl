@@ -55,7 +55,7 @@ void normalize_vec4f(wg_vec4f *a) {
   a->w = 1.0f;
 }
 
-void matmul(wg_mat44f *const a, wg_mat44f *const b, wg_mat44f *y) {
+void matmul(const wg_mat44f *a, const wg_mat44f *b, wg_mat44f *y) {
   float tmp[4][4];
   for (int i = 0; i < 4; i ++) {
     for (int j = 0; j < 4; j ++) {
@@ -72,7 +72,7 @@ void matmul(wg_mat44f *const a, wg_mat44f *const b, wg_mat44f *y) {
   }
 }
 
-void matvecmul4(wg_mat44f *const m, wg_vec4f *const b, wg_vec4f *y) {
+void matvecmul4(const wg_mat44f *m, const wg_vec4f *b, wg_vec4f *y) {
   float tmp[4];
   for (int i = 0; i < 4; i ++) {
     tmp[i] = 0;
@@ -146,11 +146,11 @@ void transform_update(wg_transform_t *t) {
   matmul(t->projection, t->transform, t->transform_p);
 }
 
-void transform_apply(wg_transform_t *const t, wg_point_t *y, wg_point_t *const x) {
+void transform_apply(const wg_transform_t *t, wg_point_t *y, const wg_point_t *x) {
   matvecmul4(t->transform, x, y);
 }
 
-void transform_homogenous(wg_transform_t *const t, wg_vertex_t *x) {
+void transform_homogenous(const wg_transform_t *t, wg_vertex_t *x) {
   wg_vec4f *posH = &(x->vPosH);
   float rhz = 1.0f / posH->w;
   posH->x *= rhz;
@@ -174,7 +174,7 @@ void vertex_init_rhw(wg_vertex_t *x) {
   x->vColor.b *= rhw;
 }
 
-void vertex_add(wg_vertex_t *y, wg_vertex_t *const x) {
+void vertex_add(wg_vertex_t *y, const wg_vertex_t *x) {
   for (int i = 0; i < 4; i ++) y->vPosH.v[i] += x->vPosH.v[i];
   for (int i = 0; i < 3; i ++) y->vPos.v[i] += x->vPos.v[i];
   for (int i = 0; i < 3; i ++) y->normal.v[i] += x->normal.v[i];
@@ -186,7 +186,7 @@ void vertex_add(wg_vertex_t *y, wg_vertex_t *const x) {
   y->rhw += x->rhw;
 }
 
-void vertex_sub(wg_vertex_t *y, wg_vertex_t *const x) {
+void vertex_sub(wg_vertex_t *y, const wg_vertex_t *x) {
   for (int i = 0; i < 4; i ++) y->vPosH.v[i] -= x->vPosH.v[i];
   for (int i = 0; i < 3; i ++) y->vPos.v[i] -= x->vPos.v[i];
   for (int i = 0; i < 3; i ++) y->normal.v[i] -= x->normal.v[i];
@@ -210,13 +210,13 @@ void vertex_scale(wg_vertex_t *y, float x) {
   y->rhw *= x;
 }
 
-void vertex_step(wg_vertex_t *step, wg_vertex_t *const l, wg_vertex_t *const r) {
+void vertex_step(wg_vertex_t *step, const wg_vertex_t *l, const wg_vertex_t *r) {
   *step = *r;
   vertex_sub(step, l);
   vertex_scale(step, 1. / (r->vPosH.x - l->vPosH.x + 1e-6));
 }
 
-void vertex_interp(wg_vertex_t *v, wg_vertex_t *const v1, wg_vertex_t *const v2, float x) {
+void vertex_interp(wg_vertex_t *v, const wg_vertex_t *v1, const wg_vertex_t *v2, float x) {
   v->vPosH = lerp_vec4f(v1->vPosH, v2->vPosH, x);
   v->vPos = lerp_vec4f(v1->vPos, v2->vPos, x);
   v->normal = lerp_vec4f(v1->normal, v2->normal, x);

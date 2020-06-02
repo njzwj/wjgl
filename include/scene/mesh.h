@@ -15,7 +15,7 @@ typedef struct {
   uint32_t *triangle;
 } wg_mesh_t;
 
-wg_vertex_t *assemble_vertex(wg_mesh_t *const mesh);
+wg_vertex_t *assemble_vertex(const wg_mesh_t *mesh);
 
 void destroy_mesh(wg_mesh_t *mesh);
 

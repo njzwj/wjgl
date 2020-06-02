@@ -4,15 +4,15 @@
 #include "common.h"
 
 void shade_vertex(
-  wg_render_t *const render, 
+  const wg_render_t *render, 
   wg_vertex_t *v, size_t size, 
-  void (*vs)(wg_render_t *const render, wg_vertex_t *v)) {
+  void (*vs)(const wg_render_t *render, wg_vertex_t *v)) {
   for (int i = 0; i < size; i ++) {
     (*vs)(render, v + i);
   }
 }
 
-void default_vs(wg_render_t *const render, wg_vertex_t *v) {
+void default_vs(const wg_render_t *render, wg_vertex_t *v) {
   matvecmul4(render->transform.transform_p, &v->vPos, &v->vPosH);
   matvecmul4(render->transform.transform, &v->vPos, &v->vPos);
   matvecmul4(render->transform.transform, &v->normal, &v->normal);
@@ -35,7 +35,7 @@ void shade_fragment(wg_render_t *render) {
   }
 }
 
-static uint32_t rgb_to_uint(wg_color_t *const t) {
+static uint32_t rgb_to_uint(const wg_color_t *t) {
   int c[3];
   uint32_t res = 0;
   c[0] = t->r * 255;

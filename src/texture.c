@@ -31,7 +31,7 @@ void delete_texture(wg_texture_t **ptex) {
  * @param {type} 
  * @return: 
  */
-uint32_t get_pixel(wg_texture_t *const tex, uint32_t x, uint32_t y) {
+uint32_t get_pixel(const wg_texture_t *tex, uint32_t x, uint32_t y) {
   Assert(x >= 0 && x < tex->width && y >= 0 && y < tex->height, "Coord must be in bounds of texture.");
   uint32_t *buf = (uint32_t*)tex->buffer;
   return buf[x + y * tex->width];

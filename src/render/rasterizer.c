@@ -19,20 +19,20 @@ typedef struct {
 } wg_scanline_t;
 
 static void draw_trapezoid(
-  wg_render_t *const render,
-  wg_trapezoid_t *const t
+  const wg_render_t *render,
+  const wg_trapezoid_t *t
 );
 
 static void draw_triangle(
-  wg_render_t *const render,
-  wg_vertex_t *const v1,
-  wg_vertex_t *const v2,
-  wg_vertex_t *const v3
+  const wg_render_t *render,
+  const wg_vertex_t *v1,
+  const wg_vertex_t *v2,
+  const wg_vertex_t *v3
 );
 
 static void draw_scanline(
-  wg_render_t *const render,
-  wg_scanline_t *const s
+  const wg_render_t *render,
+  const wg_scanline_t *s
 );
 
 static void swap_ptr(void **a, void **b) {
@@ -51,10 +51,10 @@ static void swap_ptr(void **a, void **b) {
  *  right:  x >  w
  *  bottom: y < -w
  *  top:    y >  w
- * @param {wg_point_t *const p} 
+ * @param {const wg_point_t *p} 
  * @return: int that represents current status.
  */
-static int check_cvv(wg_point_t *const p) {
+static int check_cvv(const wg_point_t *p) {
   float w = p->w;
   int res = 0;
   if (p->z < 0.) res |= 1;
@@ -74,7 +74,7 @@ static int check_cvv(wg_point_t *const p) {
  * @param {*inter} Inter ratio raletive to v1->v2. 
  * @return: int. 1 if intersects.
  */
-static int line_border_inter(wg_point_t *const v1, wg_point_t *const v2, float x, float y, float z, float w, float *ratio) {
+static int line_border_inter(const wg_point_t *v1, const wg_point_t *v2, float x, float y, float z, float w, float *ratio) {
   float dist1 = x * v1->x + y * v1->y + z * v1->z + w * v1->w;
   float dist2 = x * v2->x + y * v2->y + z * v2->z + w * v2->w;
   if (dist1 * dist2 > 0.f) return 0;
@@ -84,14 +84,14 @@ static int line_border_inter(wg_point_t *const v1, wg_point_t *const v2, float x
   return 1;
 }
 
-static int map_coord_to_offset(wg_render_t *const render, int x, int y) {
+static int map_coord_to_offset(const wg_render_t *render, int x, int y) {
   return render->width * y + x;
 }
 
 static int split_trapezoid(
-  wg_vertex_t *const v1,
-  wg_vertex_t *const v2,
-  wg_vertex_t *const v3,
+  const wg_vertex_t *v1,
+  const wg_vertex_t *v2,
+  const wg_vertex_t *v3,
   wg_trapezoid_t *t1,
   wg_trapezoid_t *t2
 ) {
@@ -121,17 +121,17 @@ static int split_trapezoid(
 
 /**
  * @description: Projects a single vertex (without screen space div)
- * @param {wg_render_t *const render} Render pointer.
+ * @param {const wg_render_t *render} Render pointer.
  * @param {wg_vertex_t *v} Vertex to be projected.
  */
-static void project_vertex(wg_render_t *const render, wg_vertex_t *v) {
+static void project_vertex(const wg_render_t *render, wg_vertex_t *v) {
   matvecmul4(render->transform.transform_p, &v->vPos, &v->vPosH);
   matvecmul4(render->transform.transform, &v->vPos, &v->vPos);
   matvecmul4(render->transform.transform, &v->normal, &v->normal);
 }
 
 void project_vertexes(
-  wg_render_t *const render, 
+  const wg_render_t *render, 
   wg_vertex_t *v, size_t size
 ) {
   for (int i = 0; i < size; i ++) {
@@ -148,10 +148,10 @@ void project_vertexes(
  * @param {v3} 
  */
 void cull_and_draw_triangle(
-  wg_render_t *const render,
-  wg_vertex_t *const v1,
-  wg_vertex_t *const v2,
-  wg_vertex_t *const v3
+  const wg_render_t *render,
+  const wg_vertex_t *v1,
+  const wg_vertex_t *v2,
+  const wg_vertex_t *v3
 ) {
   // near plane culling
   wg_point_t *p1 = &v1->vPosH, *p2 = &v2->vPosH, *p3 = &v3->vPosH;
@@ -216,10 +216,10 @@ void cull_and_draw_triangle(
 }
 
 static void draw_triangle(
-  wg_render_t *const render,
-  wg_vertex_t *const v1,
-  wg_vertex_t *const v2,
-  wg_vertex_t *const v3
+  const wg_render_t *render,
+  const wg_vertex_t *v1,
+  const wg_vertex_t *v2,
+  const wg_vertex_t *v3
 ) {
   wg_trapezoid_t t1, t2;
   int n_trape = split_trapezoid(v1, v2, v3, &t1, &t2);
@@ -230,8 +230,8 @@ static void draw_triangle(
 }
 
 static void draw_trapezoid(
-  wg_render_t *const render,
-  wg_trapezoid_t *const t
+  const wg_render_t *render,
+  const wg_trapezoid_t *t
 ) {
   wg_vertex_t l, r, step, start;
   wg_scanline_t scanline;
@@ -252,8 +252,8 @@ static void draw_trapezoid(
 }
 
 static void draw_scanline(
-  wg_render_t *const render,
-  wg_scanline_t *const s
+  const wg_render_t *render,
+  const wg_scanline_t *s
 ) {
   int x = s->x, y = s->y;
   wg_vertex_t v = s->v;

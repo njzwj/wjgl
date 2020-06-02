@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 
-wg_vertex_t *assemble_vertex(wg_mesh_t *const mesh) {
+wg_vertex_t *assemble_vertex(const wg_mesh_t *mesh) {
   uint32_t nv = mesh->nVertex;
   wg_vertex_t *v = (wg_vertex_t*)malloc(nv * sizeof(wg_vertex_t));
   for (int i = 0; i < nv; i ++) {
