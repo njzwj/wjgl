@@ -1,6 +1,8 @@
 #ifndef __GEOM_H__
 #define __GEOM_H__
 
+#include <stdint.h>
+
 typedef struct {
   union {
     struct { float x, y, z, w; };
@@ -114,5 +116,9 @@ void vertex_scale(wg_vertex_t *y, float x);
 void vertex_step(wg_vertex_t *step, wg_vertex_t *const l, wg_vertex_t *const r);
 
 void vertex_interp(wg_vertex_t *v, wg_vertex_t *const v1, wg_vertex_t *const v2, float x);
+
+uint32_t color_cvt_float2uint(const wg_color_t c);
+
+wg_color_t color_cvt_uint2float(const uint32_t c);
 
 #endif

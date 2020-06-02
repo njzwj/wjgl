@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "common.h"
 #include "geom.h"
+#include "texture.h"
 
 enum RENDER_MODE {
   FRAMEWORK = 1,
@@ -24,6 +25,9 @@ typedef struct {
 
   /* Transform */
   wg_transform_t transform;
+
+  /* Texture */
+  wg_texture_t *texture;
 
   /* buffers */
   uint8_t *stencil;

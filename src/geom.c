@@ -227,3 +227,23 @@ void vertex_interp(wg_vertex_t *v, wg_vertex_t *const v1, wg_vertex_t *const v2,
   v->vColor.b = lerp(v1->vColor.b, v2->vColor.b, x);
   v->rhw = lerp(v1->rhw, v2->rhw, x);
 }
+
+uint32_t color_cvt_float2uint(const wg_color_t c) {
+#define CLIP(x, l, h) ((x)>(l)?(x)<(h)?(x):(h):(l))
+  float r = CLIP(c.r, 0., 1.);
+  float g = CLIP(c.g, 0., 1.);
+  float b = CLIP(c.b, 0., 1.);
+  uint32_t res = 0;
+  res |= (int)(r * 255.);
+  res |= (int)(g * 255.) << 8;
+  res |= (int)(b * 255.) << 16;
+  return res;
+#undef CLIP
+}
+
+wg_color_t color_cvt_uint2float(const uint32_t c) {
+  float r = c & 255;
+  float g = (c >> 8) & 255;
+  float b = (c >> 16) & 255;
+  return (wg_color_t){r / 255., g / 255., b / 255.};
+}
