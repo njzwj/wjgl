@@ -23,9 +23,16 @@ demo/test.o: $(BUILD_DIR)/demo/test.o $(OBJS)
 	@echo link $^
 	$(CC) $^ -o $@ $(CFLAGS)
 
-.PHONY: clean test
+demo/demo_texture.o: $(BUILD_DIR)/demo/demo_texture.o $(OBJS)
+	@echo link $^
+	$(CC) $^ -o $@ $(CFLAGS)
+
+.PHONY: clean test demo_texture
 clean:
 	find . -name "*.o" | xargs rm -f
 
 test: clean demo/test.o
 	demo/test.o
+
+demo_texture: clean demo/demo_texture.o
+	demo/demo_texture.o

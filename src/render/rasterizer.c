@@ -279,6 +279,7 @@ static void draw_scanline(
       geom->vPosH = v.vPosH;
       geom->normal = v4f_mul(v.normal, w);
       geom->tc = (wg_txcoord_t){v.tc.x * w, v.tc.y * w};
+      // Log("TC %f %f", geom->tc.x, geom->tc.y);
       geom->vColor = (wg_color_t){v.vColor.r * w, v.vColor.g * w, v.vColor.b * w};
     }
     vertex_add(&v, &(s->step));

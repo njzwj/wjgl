@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "common.h"
+#include "geom.h"
 
 typedef struct {
   uint32_t width, height;
@@ -16,8 +17,8 @@ void delete_texture(wg_texture_t **tex);
 
 uint32_t get_pixel(const wg_texture_t *tex, uint32_t x, uint32_t y);
 
-void set_checkboard_texture(wg_texture_t *tex, int u, int v, uint32_t c1, uint32_t c2);
+void set_chessboard_texture(wg_texture_t *tex, int u, int v, uint32_t c1, uint32_t c2);
 
-
+wg_color_t sampler_nearest(const wg_texture_t *tex, float x, float y);
 
 #endif

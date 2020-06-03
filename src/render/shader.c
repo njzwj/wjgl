@@ -1,7 +1,8 @@
 #include "render.h"
+#include "common.h"
+#include "texture.h"
 #include <stdlib.h>
 #include <math.h>
-#include "common.h"
 
 void shade_vertex(
   const wg_render_t *render, 
@@ -21,17 +22,26 @@ void default_vs(const wg_render_t *render, wg_vertex_t *v) {
 }
 
 void shade_fragment(wg_render_t *render) {
+  int w = render->width, h = render->height, len = w * h;
   if (render->renderMode == FRAMEWORK) {
     TODO();
   } else if (render->renderMode == VERTEX_COLOR) {
-    int w = render->width, h = render->height, len = w * h;
     for (int i = 0; i < len; i ++) {
       uint8_t *stencil = render->stencil + i;
       wg_gbuff_t *gbuff = render->gBuffer + i;
       gbuff->color = gbuff->vColor;
     }
   } else if (render->renderMode == SHADED) {
-    TODO();
+    Assert(render->texture != NULL, "Texture cannot be NULL in SHADE mode.");
+    for (int i = 0; i < len; i ++) {
+      uint8_t *stencil = render->stencil + i;
+      wg_gbuff_t *gbuff = render->gBuffer + i;
+      if (*stencil > 0) {
+        // Log("TC %f %f", gbuff->tc.x, gbuff->tc.y);
+        gbuff->diffuseColor = sampler_nearest(render->texture, gbuff->tc.x, gbuff->tc.y);
+      }
+      gbuff->color = gbuff->diffuseColor;
+    }
   }
 }
 

@@ -1,5 +1,6 @@
 #include "texture.h"
 #include <stdlib.h>
+#include <math.h>
 
 /**
  * @description: Returns an empty texture buffer. 
@@ -28,7 +29,8 @@ void delete_texture(wg_texture_t **ptex) {
 }
 /**
  * @description: Get pixel color of texture buffer.
- * @param {type} 
+ * @param {const wg_texture_t *tex} Texture.
+ * @param {x, y} Target pixel.
  * @return: 
  */
 uint32_t get_pixel(const wg_texture_t *tex, uint32_t x, uint32_t y) {
@@ -39,10 +41,12 @@ uint32_t get_pixel(const wg_texture_t *tex, uint32_t x, uint32_t y) {
 
 /**
  * @description: Set texture to chessboard
- * @param {type} 
+ * @param {wg_texture_t *tex} Output texture.
+ * @param {u, v} Block number in x, y
+ * @param {c1, c2} Block color. 
  * @return: 
  */
-void set_checkboard_texture(wg_texture_t *tex, int u, int v, uint32_t c1, uint32_t c2) {
+void set_chessboard_texture(wg_texture_t *tex, int u, int v, uint32_t c1, uint32_t c2) {
   uint32_t *buf = (uint32_t*)tex->buffer;
   for (int y = 0; y < tex->height; y ++) {
     for (int x = 0; x < tex->width; x ++) {
@@ -53,4 +57,19 @@ void set_checkboard_texture(wg_texture_t *tex, int u, int v, uint32_t c1, uint32
       }
     }
   }
+}
+
+/**
+ * @description: Nearest texture sampler
+ * @param {const wg_texture_t *tex} Texture
+ * @param {flaot x, y} Position
+ * @return: 
+ */
+wg_color_t sampler_nearest(const wg_texture_t *tex, float x, float y) {
+  uint32_t ux = floorf(x * tex->width + 1e-6);
+  uint32_t uy = floorf(y * tex->height + 1e-6);
+  ux = ux < tex->width ? ux : tex->width - 1;
+  uy = uy < tex->height ? uy : tex->height - 1;
+  uint32_t c = get_pixel(tex, ux, uy);
+  return color_cvt_uint2float(c);
 }

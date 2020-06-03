@@ -221,7 +221,7 @@ void vertex_interp(wg_vertex_t *v, const wg_vertex_t *v1, const wg_vertex_t *v2,
   v->vPos = lerp_vec4f(v1->vPos, v2->vPos, x);
   v->normal = lerp_vec4f(v1->normal, v2->normal, x);
   v->tc.x = lerp(v1->tc.x, v2->tc.x, x);
-  v->tc.y = lerp(v1->tc.x, v2->tc.x, x);
+  v->tc.y = lerp(v1->tc.y, v2->tc.y, x);
   v->vColor.r = lerp(v1->vColor.r, v2->vColor.r, x);
   v->vColor.g = lerp(v1->vColor.g, v2->vColor.g, x);
   v->vColor.b = lerp(v1->vColor.b, v2->vColor.b, x);
