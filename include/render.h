@@ -15,6 +15,7 @@ enum RENDER_MODE {
 typedef struct {
   /* Render mode */
   enum RENDER_MODE renderMode;
+  enum TEX_SAMPLE_MODE sampleMode;
   
   /* Color: edge, fill. 
      only takes effect when render mode = FRAMEWORK */

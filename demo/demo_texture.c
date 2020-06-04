@@ -31,6 +31,8 @@ void test_render() {
   up = (wg_point_t){ {{0., 1., 0., 1.}} };
 
   render->renderMode = SHADED;
+  render->sampleMode = BILINEAR;
+  // render->sampleMode = NEAREST;
 
   set_up_render(render, W, H);
   get_identical_mat(&t_world);

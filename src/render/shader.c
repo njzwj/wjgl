@@ -33,11 +33,12 @@ void shade_fragment(wg_render_t *render) {
     }
   } else if (render->renderMode == SHADED) {
     Assert(render->texture != NULL, "Texture cannot be NULL in SHADE mode.");
+    wg_color_t (*t_sampler)(const wg_texture_t *tex, float x, float y) = load_sampler(render->sampleMode);
     for (int i = 0; i < len; i ++) {
       uint8_t *stencil = render->stencil + i;
       wg_gbuff_t *gbuff = render->gBuffer + i;
       if (*stencil > 0) {
-        gbuff->diffuseColor = sampler_nearest(render->texture, gbuff->tc.x, gbuff->tc.y);
+        gbuff->diffuseColor = (*t_sampler)(render->texture, gbuff->tc.x, gbuff->tc.y);
       }
       gbuff->color = gbuff->diffuseColor;
     }
