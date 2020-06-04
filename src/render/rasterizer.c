@@ -158,14 +158,7 @@ void cull_and_draw_triangle(
   int cp1 = check_cvv(p1) & 1;
   int cp2 = check_cvv(p2) & 1;
   int cp3 = check_cvv(p3) & 1;
-  Log("Position of vertex: %d %d %d", cp1, cp2, cp3);
-  Log("Vertex 1 posH (x, y, z, w) = %.4f %.4f %.4f %.4f", v1->vPosH.x, \
-      v1->vPosH.y, v1->vPosH.z, v1->vPosH.w);
-  Log("Vertex 2 posH (x, y, z, w) = %.4f %.4f %.4f %.4f", v2->vPosH.x, \
-      v2->vPosH.y, v2->vPosH.z, v2->vPosH.w);
-  Log("Vertex 1 pos (x, y, z, w) = %.4f %.4f %.4f %.4f", v1->vPos.x, \
-      v1->vPos.y, v1->vPos.z, v1->vPos.w);
-  // Will only deal with near plane culling because only when w is smaller than 0 most of 
+  // Will only deal with near plane culling because only when z is smaller than 0 most of 
   //   the rasterization algorithms followed will have issue to run correctly.
   // Also, by doing this, the alogorithm won't be too complicated.
   // Why clip by z=0? Because this will avoid the "divide by negative z error" in the next
@@ -182,7 +175,6 @@ void cull_and_draw_triangle(
   f = line_border_inter(&v1->vPosH, &v2->vPosH, 0., 0., 1., 0., &ratio);
   if (f) {
     vertex_interp(&v[n_vertex], v1, v2, ratio);
-    Log("First ratio %f", ratio);
     ++ n_vertex;
   }
   if (cp2 == 0) v[n_vertex++] = *v2;
@@ -198,9 +190,6 @@ void cull_and_draw_triangle(
     ++n_vertex;
   }
   Assert(n_vertex <= 4, "Number of vertexes should be <= 4 after culling!");
-  Log("Number of vertex: %d", n_vertex);
-  Log("Vertex 1 after culling posH (x, y, z, w) = %.4f %.4f %.4f %.4f", v[0].vPosH.x, \
-      v[0].vPosH.y, v[0].vPosH.z, v[0].vPosH.w);
   for (int i = 0; i < n_vertex; i ++) {
     transform_homogenous(&render->transform, &v[i]);
     vertex_init_rhw(&v[i]);
@@ -235,9 +224,10 @@ static void draw_trapezoid(
 ) {
   wg_vertex_t l, r, step, start;
   wg_scanline_t scanline;
-  float ystep = 1.0f / (t->bottom - t->top);
-  float yratio = (t->v1.vPosH.y - t->top) / (t->bottom - t->top);
-  for (int y = (int)ceilf(t->top); y < t->bottom; y ++, yratio += ystep) {
+  float y_st = ceilf(t->top), y_ed = ceilf(t->bottom);
+  float ylength = t->bottom - t->top;
+  float yratio = (y_st - t->top) / ylength;
+  for (int y = (int)y_st; y < y_ed; y ++, yratio = (y - t->top) / ylength) {
     if (y < 0) continue;
     if (y >= render->height) break;
     vertex_interp(&l, &(t->v1), &(t->v2), yratio);
@@ -279,7 +269,6 @@ static void draw_scanline(
       geom->vPosH = v.vPosH;
       geom->normal = v4f_mul(v.normal, w);
       geom->tc = (wg_txcoord_t){v.tc.x * w, v.tc.y * w};
-      // Log("TC %f %f", geom->tc.x, geom->tc.y);
       geom->vColor = (wg_color_t){v.vColor.r * w, v.vColor.g * w, v.vColor.b * w};
     }
     vertex_add(&v, &(s->step));

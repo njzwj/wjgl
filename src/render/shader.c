@@ -37,7 +37,6 @@ void shade_fragment(wg_render_t *render) {
       uint8_t *stencil = render->stencil + i;
       wg_gbuff_t *gbuff = render->gBuffer + i;
       if (*stencil > 0) {
-        // Log("TC %f %f", gbuff->tc.x, gbuff->tc.y);
         gbuff->diffuseColor = sampler_nearest(render->texture, gbuff->tc.x, gbuff->tc.y);
       }
       gbuff->color = gbuff->diffuseColor;

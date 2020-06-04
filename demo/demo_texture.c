@@ -26,7 +26,7 @@ void test_render() {
   render->texture = tex_chessboard;
   uint8_t rgb[W * H * 3], *p = rgb;
 
-  eye = (wg_point_t){ {{5., 0., 20., 1.}} };
+  eye = (wg_point_t){ {{ -5., -5., 20., 1.}} };
   center = (wg_point_t){ {{0., 0., 0., 1.}} };
   up = (wg_point_t){ {{0., 1., 0., 1.}} };
 
