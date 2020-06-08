@@ -34,7 +34,7 @@ void delete_texture(wg_texture_t **ptex) {
  * @return: 
  */
 uint32_t get_pixel(const wg_texture_t *tex, uint32_t x, uint32_t y) {
-  Assert(x >= 0 && x < tex->width && y >= 0 && y < tex->height, "Coord must be in bounds of texture.");
+  Assert(x >= 0 && x < tex->width && y >= 0 && y < tex->height, "Coord must be in bounds of texture. (%u, %u)", x, y);
   uint32_t *buf = (uint32_t*)tex->buffer;
   return buf[x + y * tex->width];
 }
@@ -99,8 +99,12 @@ wg_color_t sampler_bilinear(const wg_texture_t *tex, float x, float y) {
   y = CLIP(y, 0.f, 1.f) * (tex->height - 1);
   uint32_t x0 = floorf(x);
   uint32_t y0 = floorf(y);
+  x0 = CLIP(x0, 0, tex->width - 2);
+  y0 = CLIP(y0, 0, tex->height - 2);
   float u = x0 + 1. - x;
   float v = y0 + 1. - y;
+  u = CLIP(u, 0., 1.);
+  v = CLIP(v, 0., 1.);
   wg_color_t res = (wg_color_t){0., 0., 0.};
   wg_color_t c;
   c = color_cvt_uint2float(get_pixel(tex, x0, y0));
