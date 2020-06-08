@@ -266,10 +266,14 @@ static void draw_scanline(
       *depth = z;
       *stencil = 1;
       geom = render->gBuffer + map_coord_to_offset(render, x, y);
-      geom->vPosH = v.vPosH;
+      geom->vPosH = v4f_mul(v.vPosH, w);
+      geom->vPos = v4f_mul(v.vPos, w);
       geom->normal = v4f_mul(v.normal, w);
       geom->tc = (wg_txcoord_t){v.tc.x * w, v.tc.y * w};
       geom->vColor = (wg_color_t){v.vColor.r * w, v.vColor.g * w, v.vColor.b * w};
+      geom->color = (wg_color_t){0., 0., 0.};
+      geom->diffuseColor = (wg_color_t){0., 0., 0.};
+      geom->specularColorAdder = (wg_color_t){0., 0., 0.};
     }
     vertex_add(&v, &(s->step));
     x ++;

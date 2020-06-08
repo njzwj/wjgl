@@ -121,4 +121,6 @@ uint32_t color_cvt_float2uint(const wg_color_t c);
 
 wg_color_t color_cvt_uint2float(const uint32_t c);
 
+void color_mul_add(wg_color_t *adder, wg_color_t c, float mul);
+
 #endif

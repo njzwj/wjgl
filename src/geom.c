@@ -247,3 +247,9 @@ wg_color_t color_cvt_uint2float(const uint32_t c) {
   float b = (c >> 16) & 255;
   return (wg_color_t){r / 255., g / 255., b / 255.};
 }
+
+void color_mul_add(wg_color_t *adder, wg_color_t c, float mul) {
+  adder->r += c.r * mul;
+  adder->g += c.g * mul;
+  adder->b += c.b * mul;
+}

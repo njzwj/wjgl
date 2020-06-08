@@ -7,6 +7,7 @@ static wg_render_t *render = NULL;
 static void try_init_render() {
   if (render == NULL) {
     render = (wg_render_t *)malloc(sizeof(wg_render_t));
+    render->fshaderName = "default";
     render->stencil = NULL;
     render->frameBuffer = NULL;
     render->zBuffer = NULL;
@@ -44,4 +45,9 @@ void clear_render(wg_render_t *render) {
   for (int i = 0; i < len; i ++) render->stencil[i] = 0;
   for (int i = 0; i < len * 4; i ++) render->frameBuffer[i] = 0;
   for (int i = 0; i < len; i ++) render->zBuffer[i] = 1.;
+}
+
+void set_light(wg_render_t *render, wg_light_t light) {
+  render->light.color = light.color;
+  matvecmul4(render->transform.transform, &light.position, &render->light.position);
 }
