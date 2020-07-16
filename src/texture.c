@@ -85,7 +85,9 @@ wg_color_t sampler_nearest(const wg_texture_t *tex, float x, float y) {
   ux = ux < tex->width ? ux : tex->width - 1;
   uy = uy < tex->height ? uy : tex->height - 1;
   uint32_t c = get_pixel(tex, ux, uy);
-  return color_cvt_uint2float(c);
+  wg_color_t res = color_cvt_uint2float(c);
+  res = gamma_trans(&res, GAMMA);
+  return res;
 }
 
 /**
@@ -115,6 +117,7 @@ wg_color_t sampler_bilinear(const wg_texture_t *tex, float x, float y) {
   C_MUL_ADD(res, c, u * (1. - v));
   c = color_cvt_uint2float(get_pixel(tex, x0 + 1, y0 + 1));
   C_MUL_ADD(res, c, (1. - u) * (1. - v));
+  res = gamma_trans(&res, GAMMA);
   return res;
 }
 
@@ -129,4 +132,12 @@ wg_color_t (*load_sampler(enum TEX_SAMPLE_MODE mode))(const wg_texture_t *tex, f
   } else {
     TODO();
   }
+}
+
+wg_color_t gamma_trans(const wg_color_t *c, float pow) {
+  wg_color_t res;
+  res.r = powf(c->r, pow);
+  res.g = powf(c->g, pow);
+  res.b = powf(c->b, pow);
+  return res;
 }

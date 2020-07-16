@@ -7,4 +7,7 @@
 
 typedef uint8_t bool;
 
+#define GAMMA 2.2
+#define GAMMA_INV 0.45
+
 #endif

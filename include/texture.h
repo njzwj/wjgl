@@ -30,4 +30,6 @@ wg_color_t sampler_bilinear(const wg_texture_t *tex, float x, float y);
 
 wg_color_t (*load_sampler(enum TEX_SAMPLE_MODE mode))(const wg_texture_t *tex, float x, float y);
 
+wg_color_t gamma_trans(const wg_color_t *c, float pow);
+
 #endif

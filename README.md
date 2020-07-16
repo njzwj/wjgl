@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2020-06-08 17:27:23
- * @LastEditTime: 2020-06-08 17:30:02
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2020-07-16 12:12:07
+ * @LastEditors: Weijia Zhang
  * @Description: In User Settings Edit
  * @FilePath: /wjgl/README.md
 --> 
@@ -45,4 +45,4 @@ make demo_light             # output: demo_light.png
 
 1. OBJ格式支持：等上面都摸完。
 
-1. Gamma变换：等上面都摸完。
+1. Gamma矫正：支持，默认2.2。

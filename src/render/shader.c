@@ -87,7 +87,8 @@ void shade_on_buffer(wg_render_t *render) {
     wg_gbuff_t *gbuff = render->gBuffer + i;
     uint32_t *fbuff = (uint32_t*)(render->frameBuffer + i * 4);
     if (*stencil > 0) {
-      *fbuff = rgb_to_uint(&gbuff->color);
+      wg_color_t c = gamma_trans(&gbuff->color, GAMMA_INV);
+      *fbuff = rgb_to_uint(&c);
     } else {
       *fbuff = 0;
     }
